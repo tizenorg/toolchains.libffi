@@ -85,7 +85,9 @@ rm -rf %{buildroot}
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 # << install post
 
-
+# Tizen SDK license
+mkdir -p %{buildroot}/usr/share/license
+cp LICENSE %{buildroot}/usr/share/license/%{name}
 
 %post -p /sbin/ldconfig
 
@@ -106,6 +108,7 @@ fi
 # >> files
 %doc LICENSE README
 %{_libdir}/*.so.*
+/usr/share/license/%{name}
 # << files
 
 
