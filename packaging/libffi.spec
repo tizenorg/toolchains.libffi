@@ -11,6 +11,7 @@ Patch1:     includedir.patch
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
+
 %description
 Compilers for high level languages generate code that follow certain
 conventions.  These conventions are necessary, in part, for separate
