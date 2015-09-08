@@ -1,7 +1,7 @@
 Name:       libffi
 Summary:    A portable foreign function interface library
 Version:    3.0.9
-Release:    100
+Release:    1
 Group:      System/Libraries
 License:    BSD
 URL:        http://sourceware.org/libffi
@@ -45,8 +45,6 @@ between the two languages.
 Summary:    Development files for %{name}
 Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
-Requires(post): /sbin/install-info
-Requires(postun): /sbin/install-info
 
 %description devel
 The %{name}-devel package contains libraries and header files for
@@ -61,30 +59,22 @@ developing applications that use %{name}.
 %patch0 -p1
 # includedir.patch
 %patch1 -p1
-# >> setup
-# << setup
 
 %build
-# >> build pre
-# << build pre
 
 %reconfigure --disable-static \
     --includedir=%{_includedir}
 
 make %{?jobs:-j%jobs}
 
-# >> build post
-# << build post
 %install
 rm -rf %{buildroot}
-# >> install pre
-# << install pre
 %make_install
 
-# >> install post
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
-# << install post
 
+
+%remove_docs
 
 
 %post -p /sbin/ldconfig
@@ -93,30 +83,16 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
 
 
-%post devel
-%install_info --info-dir=%_infodir %{_infodir}/libffi.info.gz
-
-%postun devel
-if [ $1 = 0 ] ;then
-%install_info_delete --info-dir=%{_infodir} %{_infodir}/libffi.info.gz
-fi
-
 %files
 %defattr(-,root,root,-)
-# >> files
 %doc LICENSE README
 %{_libdir}/*.so.*
-# << files
 
 
 %files devel
 %defattr(-,root,root,-)
-# >> files devel
 %{_prefix}/include/ffi.h
 %{_prefix}/include/ffitarget.h
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/*.so
-%doc %{_mandir}/man3/*.gz
-%{_infodir}/libffi.info.gz
-# << files devel
 
